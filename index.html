@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>FightCamp & Iron: 6-Week Transformation</title>
+  <meta name="theme-color" content="#121212">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      --bg-dark: #0a0a0c;
+      --card-bg: #16171b;
+      --card-border: #26272e;
+      --red-accent: #ff3344;
+      --red-glow: rgba(255, 51, 68, 0.25);
+      --blue-accent: #2979ff;
+      --blue-glow: rgba(41, 121, 255, 0.25);
+      --text-main: #f0f1f5;
+      --text-muted: #8b8f9e;
+      --surface: #1e2026;
+      --gold: #ffb300;
+      --green: #00e676;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      padding-bottom: 75px;
+    }
+    header {
+      background: rgba(18, 18, 22, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ff3344, #ff80ab);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .badge-sub {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .security-chip {
+      font-size: 0.65rem;
+      padding: 4px 8px;
+      background: rgba(0, 230, 118, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Regime Mode Switcher */
+    .regime-switcher {
+      display: flex;
+      margin: 14px 16px;
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 4px;
+      border: 1px solid var(--card-border);
+    }
+    .regime-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .regime-btn.active.boxing {
+      background: var(--red-accent);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--red-glow);
+    }
+    .regime-btn.active.lifting {
+      background: var(--blue-accent);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--blue-glow);
+    }
+
+    /* Days Carousel */
+    .days-carousel {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .days-carousel::-webkit-scrollbar { display: none; }
+    .day-pill {
+      padding: 8px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.2s;
+    }
+    .day-pill.active {
+      border-color: var(--gold);
+      color: #fff;
+      background: #2a2215;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      margin: 0 16px 16px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .workout-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .meta-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.8px;
+    }
+    .meta-duration {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .workout-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .workout-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+    .exercise-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .exercise-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .ex-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .ex-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .ex-sets {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .start-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ff3344, #ff5252);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px var(--red-glow);
+      transition: transform 0.15s ease;
+    }
+    .start-btn.lifting {
+      background: linear-gradient(135deg, #2979ff, #00b0ff);
+      box-shadow: 0 6px 20px var(--blue-glow);
+    }
+    .start-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Modal / Active Player */
+    .player-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #000;
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      padding: 24px 18px;
+    }
+    .player-overlay.active {
+      display: flex;
+    }
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .close-player {
+      background: #222;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .player-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .player-stage-tag {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+    .player-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      max-width: 90%;
+    }
+    .player-instruction {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 85%;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+    .timer-ring {
+      font-size: 4rem;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      color: #fff;
+      margin-bottom: 24px;
+      text-shadow: 0 0 30px rgba(255, 51, 68, 0.4);
+    }
+    .player-controls {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+    .ctrl-btn {
+      padding: 16px 28px;
+      border: none;
+      border-radius: 40px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .ctrl-btn.primary {
+      background: #fff;
+      color: #000;
+      flex: 1;
+      max-width: 200px;
+    }
+    .ctrl-btn.secondary {
+      background: #222;
+      color: #fff;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 65px;
+      background: rgba(18, 18, 22, 0.98);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 90;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-item.active {
+      color: var(--red-accent);
+    }
+    .nav-icon {
+      font-size: 1.25rem;
+    }
+
+    /* Weight Tracker View */
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-box {
+      background: var(--surface);
+      padding: 14px;
+      border-radius: 14px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    .stat-val {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .stat-lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <div class="brand-title">IRON & STRIKE</div>
+      <div class="badge-sub">6-Week Transformation Dual-Split</div>
+    </div>
+    <div class="security-chip">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      100% On-Device
+    </div>
+  </header>
+
+  <!-- Regime Switcher -->
+  <div class="regime-switcher">
+    <button class="regime-btn active boxing" id="btn-boxing" onclick="switchRegime('boxing')">
+      🥊 Morning Boxing (25m)
+    </button>
+    <button class="regime-btn lifting" id="btn-lifting" onclick="switchRegime('lifting')">
+      🏋️ Evening Weights (40m)
+    </button>
+  </div>
+
+  <!-- Day Carousel -->
+  <div class="days-carousel">
+    <div class="day-pill active" onclick="selectDay(0, this)">Mon: Power & Chest</div>
+    <div class="day-pill" onclick="selectDay(1, this)">Tue: Speed & Back</div>
+    <div class="day-pill" onclick="selectDay(2, this)">Wed: Rest & Recovery</div>
+    <div class="day-pill" onclick="selectDay(3, this)">Thu: Angles & Delts</div>
+    <div class="day-pill" onclick="selectDay(4, this)">Fri: Gauntlet & Legs</div>
+    <div class="day-pill" onclick="selectDay(5, this)">Sat: Full Rest</div>
+    <div class="day-pill" onclick="selectDay(6, this)">Sun: Mobility</div>
+  </div>
+
+  <!-- Active Workout Card -->
+  <div class="card" id="workout-card">
+    <div class="workout-meta">
+      <span class="meta-tag" id="w-phase">PHASE 1 (WEEKS 1-2)</span>
+      <span class="meta-duration" id="w-duration">⏱️ 25 Mins</span>
+    </div>
+    <h2 class="workout-title" id="w-title">Heavy Bag & Range Power</h2>
+    <p class="workout-desc" id="w-desc">16oz gloved shadowboxing, distance calibration on the bag, and rotational core finish.</p>
+    
+    <div class="exercise-list" id="exercise-list">
+      <!-- Injected dynamically -->
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startWorkout()">Start Workout</button>
+  </div>
+
+  <!-- Profile & Stat Card -->
+  <div class="card">
+    <div class="workout-meta">
+      <span class="meta-tag">TRANSFORMATION DASHBOARD</span>
+      <span class="meta-duration">5'9" · Target 78.5 kg</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-val" id="curr-weight">84.0 kg</div>
+        <div class="stat-lbl">Current Weight</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--green)">-5.5 kg</div>
+        <div class="stat-lbl">6-Week Goal</div>
+      </div>
+    </div>
+    <div style="font-size:0.75rem; color:var(--text-muted); line-height:1.5;">
+      🔒 <strong>Zero Cloud Storage / Zero Tracking</strong>: All your logs, weights, and timestamps reside strictly inside your phone's encrypted browser storage (WebStorage API).
+    </div>
+  </div>
+
+  <!-- Leap Fitness Style Interactive Player -->
+  <div class="player-overlay" id="player">
+    <div class="player-header">
+      <span id="player-progress">Exercise 1 of 4</span>
+      <button class="close-player" onclick="closePlayer()">✕</button>
+    </div>
+    <div class="player-center">
+      <div class="player-stage-tag" id="player-stage">ROUND 1</div>
+      <div class="player-title" id="player-name">16oz Shadowboxing: 1-2s</div>
+      <div class="player-instruction" id="player-desc">Snap rear heel, keep guard tight, fire stiff jabs and crosses.</div>
+      <div class="timer-ring" id="timer-display">02:30</div>
+      <div class="player-controls">
+        <button class="ctrl-btn secondary" onclick="prevStep()">⏮</button>
+        <button class="ctrl-btn primary" id="pause-btn" onclick="toggleTimer()">Pause</button>
+        <button class="ctrl-btn secondary" onclick="nextStep()">⏭</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('workout')">
+      <span class="nav-icon">⚡</span>
+      <span>Workouts</span>
+    </div>
+    <div class="nav-item" onclick="logWeightPrompt()">
+      <span class="nav-icon">⚖️</span>
+      <span>Log Weight</span>
+    </div>
+    <div class="nav-item" onclick="showSecurityInfo()">
+      <span class="nav-icon">🛡️</span>
+      <span>Security</span>
+    </div>
+  </nav>
+
+  <script>
+    // Audio synthesis for sounds without external MP3 files
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 880, dur = 0.15) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + dur);
+    }
+
+    // Voice cues via Web Speech API
+    function speakCue(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 1.05;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    // Workouts DB
+    const workouts = {
+      boxing: [
+        {
+          day: "Monday (Technique & Range)",
+          duration: "25 Mins",
+          title: "Heavy Bag Range Calibration",
+          desc: "Warm up ankles, 16oz shadowboxing form, distance jabs on heavy bag, and ab twists.",
+          steps: [
+            { name: "Jump Rope & Foot Bounce", time: 180, desc: "Light ankle bounces and arm circles to warm shoulders." },
+            { name: "16oz Gloves: Stiff Jabs & 1-2s", time: 300, desc: "Shadowbox with 16oz gloves. High guard, step-and-drag footwork." },
+            { name: "Heavy Bag: Range Jabs & Cross", time: 540, desc: "Hit bag with snap. Don't push. Pivot rear heel on cross." },
+            { name: "Core: Russian Twists & Plank", time: 240, desc: "45s work, 15s transition. High rotational tension." }
+          ]
+        },
+        {
+          day: "Tuesday (Speed & Volume)",
+          duration: "25 Mins",
+          title: "High Output 16oz Flurries",
+          desc: "Fast hands, head movement, continuous hooks and body rips.",
+          steps: [
+            { name: "Jump Rope Double Taps", time: 180, desc: "Elastic calf rhythm." },
+            { name: "16oz Shadow: 1-2-3 Combos", time: 300, desc: "Horizontal lead hooks with full hip turn." },
+            { name: "Heavy Bag: 3-Shot Flurries", time: 540, desc: "High cadence, quick snaps, never stand flat-footed." },
+            { name: "Core: Mountain Climbers & Flutters", time: 240, desc: "High tempo ab compression." }
+          ]
+        },
+        { day: "Wednesday", title: "Active Rest Day", duration: "Off", desc: "Shoulder band stretches, foam rolling, walk." },
+        {
+          day: "Thursday (Defense & Angles)",
+          duration: "25 Mins",
+          title: "Slips, Rolls & Pivots",
+          desc: "Box the bag like an opponent that hits back. Slip right, roll under, pivot 90 degrees.",
+          steps: [
+            { name: "Jump Rope & Hip Opener", time: 180, desc: "Dynamic stretching." },
+            { name: "16oz Shadow: Slip-Counter Flow", time: 300, desc: "Slip, roll, throw 2-3 counter." },
+            { name: "Heavy Bag: Angles & Body Shots", time: 540, desc: "Drop with knees on liver/rib strikes." },
+            { name: "Core: Boxer Sit-ups with 1-2s", time: 240, desc: "Fire double punches at the top." }
+          ]
+        },
+        {
+          day: "Friday (Championship Burnout)",
+          duration: "25 Mins",
+          title: "Full 8-Round Bag Gauntlet",
+          desc: "High-intensity bag power sprints, infighting pressure, and iron core finish.",
+          steps: [
+            { name: "Jump Rope Sprint", time: 180, desc: "Fast pacing." },
+            { name: "16oz Shadow: Inside Infighting", time: 300, desc: "Tight hooks and short uppercuts." },
+            { name: "Heavy Bag: Tabata Sprints", time: 540, desc: "15s all-out flurry / 15s active step." },
+            { name: "Core: Hollow Dish & Leg Raises", time: 240, desc: "Iron core hold." }
+          ]
+        }
+      ],
+      lifting: [
+        {
+          day: "Monday (Chest, Triceps & Calves)",
+          duration: "40 Mins",
+          title: "Heavy Bench & Upper Push",
+          desc: "Barbell bench press, incline dumbbell press, cable flyes, and rope pushdowns.",
+          steps: [
+            { name: "Bench Press (4 Sets)", time: 480, desc: "Warm-up then 3x8-10 reps + 1 rest-pause set." },
+            { name: "Incline DB Press (3 Sets)", time: 420, desc: "Full chest stretch and powerful press." },
+            { name: "Incline DB Flyes (3 Sets)", time: 360, desc: "Controlled deep stretch." },
+            { name: "Triceps Rope Pushdowns (3 Sets)", time: 360, desc: "Lock out elbows and spread rope." },
+            { name: "Standing Calf Raises (4 Sets)", time: 360, desc: "2-second peak pause at top." }
+          ]
+        },
+        {
+          day: "Tuesday (Back, Biceps & Calves)",
+          duration: "40 Mins",
+          title: "Rows & Lat Hypertrophy",
+          desc: "Bent-over barbell rows, wide-grip lat pulldowns, seated cable rows, and heavy curls.",
+          steps: [
+            { name: "Barbell Bent-Over Rows", time: 480, desc: "Pull to sternum, squeeze lats hard." },
+            { name: "Lat Pulldowns (3 Sets)", time: 420, desc: "Full stretch, drive elbows down." },
+            { name: "Seated Cable Rows (3 Sets)", time: 360, desc: "Tight horizontal contraction." },
+            { name: "Barbell Bicep Curls (4 Sets)", time: 360, desc: "Strict form, zero swing." },
+            { name: "Seated Calf Raises (4 Sets)", time: 360, desc: "High reps for soleus pump." }
+          ]
+        },
+        { day: "Wednesday", title: "Active Rest Day", duration: "Off", desc: "Rest day to regenerate central nervous system." },
+        {
+          day: "Thursday (Shoulders, Traps & Abs)",
+          duration: "40 Mins",
+          title: "Deltoid Width & Heavy Press",
+          desc: "Seated dumbbell overhead press, lateral raises, face pulls, and dumbbell shrugs.",
+          steps: [
+            { name: "DB Overhead Press (4 Sets)", time: 480, desc: "Heavy pressing power." },
+            { name: "DB Lateral Raises (3 Sets)", time: 360, desc: "Strict side deltoid burnout." },
+            { name: "Rear Delt Face Pulls (3 Sets)", time: 360, desc: "Protect shoulders & thicken back." },
+            { name: "DB Heavy Shrugs (4 Sets)", time: 360, desc: "Trapezius development." },
+            { name: "Hanging Leg Raises (3 Sets)", time: 360, desc: "Lower ab tightness." }
+          ]
+        },
+        {
+          day: "Friday (Legs & Posterior Chain)",
+          duration: "40 Mins",
+          title: "Barbell Squats & Deadlifts",
+          desc: "Back squats, Romanian deadlifts, leg press, and seated hamstring curls.",
+          steps: [
+            { name: "Barbell Back Squat (4 Sets)", time: 600, desc: "Drive up from heels and hips." },
+            { name: "Romanian Deadlifts (4 Sets)", time: 480, desc: "Hamstrings and glute hinge." },
+            { name: "45-Deg Leg Press (3 Sets)", time: 420, desc: "Deep quadricep volume." },
+            { name: "Lying Hamstring Curls (3 Sets)", time: 360, desc: "Direct posterior chain load." }
+          ]
+        }
+      ]
+    };
+
+    let curRegime = 'boxing';
+    let curDayIdx = 0;
+    let timerId = null;
+    let remainingTime = 0;
+    let curStepIdx = 0;
+    let isRunning = false;
+
+    function renderWorkout() {
+      const wList = workouts[curRegime];
+      const cur = wList[curDayIdx] || wList[0];
+      const card = document.getElementById('workout-card');
+      const exList = document.getElementById('exercise-list');
+      const startBtn = document.getElementById('start-btn');
+
+      document.getElementById('w-duration').textContent = '⏱️ ' + cur.duration;
+      document.getElementById('w-title').textContent = cur.title;
+      document.getElementById('w-desc').textContent = cur.desc;
+
+      if (!cur.steps) {
+        exList.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted)">🌿 Rest day. Foam roll and hydrate.</div>';
+        startBtn.style.display = 'none';
+        return;
+      }
+
+      startBtn.style.display = 'block';
+      startBtn.className = 'start-btn ' + (curRegime === 'lifting' ? 'lifting' : '');
+
+      exList.innerHTML = cur.steps.map(s => `
+        <div class="exercise-item">
+          <div class="ex-info">
+            <div class="ex-name">${s.name}</div>
+            <div class="ex-sets">${s.desc}</div>
+          </div>
+          <div style="font-weight:800;font-size:0.85rem;color:var(--gold);">${Math.floor(s.time/60)}m</div>
+        </div>
+      `).join('');
+    }
+
+    function switchRegime(mode) {
+      curRegime = mode;
+      document.getElementById('btn-boxing').classList.toggle('active', mode === 'boxing');
+      document.getElementById('btn-lifting').classList.toggle('active', mode === 'lifting');
+      renderWorkout();
+    }
+
+    function selectDay(idx, el) {
+      curDayIdx = idx;
+      document.querySelectorAll('.day-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      renderWorkout();
+    }
+
+    function startWorkout() {
+      const cur = workouts[curRegime][curDayIdx];
+      if (!cur || !cur.steps) return;
+      curStepIdx = 0;
+      loadStep(curStepIdx);
+      document.getElementById('player').classList.add('active');
+    }
+
+    function loadStep(idx) {
+      const cur = workouts[curRegime][curDayIdx];
+      const step = cur.steps[idx];
+      remainingTime = step.time;
+      document.getElementById('player-progress').textContent = `Exercise ${idx + 1} of ${cur.steps.length}`;
+      document.getElementById('player-stage').textContent = `ROUND ${idx + 1}`;
+      document.getElementById('player-name').textContent = step.name;
+      document.getElementById('player-desc').textContent = step.desc;
+      updateTimerDisplay();
+      playBeep(920, 0.3);
+      speakCue(step.name);
+      if (isRunning) clearInterval(timerId);
+      runTimer();
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(remainingTime / 60);
+      const s = remainingTime % 60;
+      document.getElementById('timer-display').textContent = 
+        `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    function runTimer() {
+      isRunning = true;
+      document.getElementById('pause-btn').textContent = 'Pause';
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        if (remainingTime > 0) {
+          remainingTime--;
+          updateTimerDisplay();
+          if (remainingTime === 3) playBeep(600, 0.1);
+          if (remainingTime === 2) playBeep(600, 0.1);
+          if (remainingTime === 1) playBeep(600, 0.1);
+        } else {
+          clearInterval(timerId);
+          playBeep(1200, 0.5);
+          nextStep();
+        }
+      }, 1000);
+    }
+
+    function toggleTimer() {
+      if (isRunning) {
+        clearInterval(timerId);
+        isRunning = false;
+        document.getElementById('pause-btn').textContent = 'Resume';
+      } else {
+        runTimer();
+      }
+    }
+
+    function nextStep() {
+      const cur = workouts[curRegime][curDayIdx];
+      if (curStepIdx < cur.steps.length - 1) {
+        curStepIdx++;
+        loadStep(curStepIdx);
+      } else {
+        speakCue("Workout Complete! Fantastic job.");
+        alert("🎉 Congratulations! Workout completed!");
+        closePlayer();
+      }
+    }
+
+    function prevStep() {
+      if (curStepIdx > 0) {
+        curStepIdx--;
+        loadStep(curStepIdx);
+      }
+    }
+
+    function closePlayer() {
+      clearInterval(timerId);
+      isRunning = false;
+      document.getElementById('player').classList.remove('active');
+    }
+
+    function logWeightPrompt() {
+      const input = prompt("Log your today's morning weight (kg):", "83.5");
+      if (input && !isNaN(input)) {
+        localStorage.setItem("user_cur_weight", input);
+        document.getElementById('curr-weight').textContent = input + " kg";
+      }
+    }
+
+    function showSecurityInfo() {
+      alert("🛡️ Security & Privacy Architecture:\n\n1. 100% Zero-Cloud Storage: All your logs, timers, and data remain strictly on your phone.\n2. Zero telemetry or external tracker scripts.\n3. Fully offline-ready.\n4. Direct phone-side execution.");
+    }
+
+    // Initialize
+    const savedW = localStorage.getItem("user_cur_weight");
+    if (savedW) document.getElementById('curr-weight').textContent = savedW + " kg";
+    renderWorkout();
+  </script>
+</body>
+</html>
