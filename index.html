@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>FightCamp & Iron: 6-Week Transformation</title>
+  <title>Iron & Strike: 6-Week Transformation</title>
   <meta name="theme-color" content="#121212">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,14 +14,16 @@
       --card-bg: #16171b;
       --card-border: #26272e;
       --red-accent: #ff3344;
-      --red-glow: rgba(255, 51, 68, 0.25);
+      --red-glow: rgba(255, 51, 68, 0.28);
       --blue-accent: #2979ff;
-      --blue-glow: rgba(41, 121, 255, 0.25);
+      --blue-glow: rgba(41, 121, 255, 0.28);
       --text-main: #f0f1f5;
       --text-muted: #8b8f9e;
       --surface: #1e2026;
+      --surface-hover: #282a33;
       --gold: #ffb300;
       --green: #00e676;
+      --green-glow: rgba(0, 230, 118, 0.25);
     }
     * {
       box-sizing: border-box;
@@ -35,7 +37,7 @@
       background: var(--bg-dark);
       color: var(--text-main);
       overflow-x: hidden;
-      padding-bottom: 75px;
+      padding-bottom: 85px;
     }
     header {
       background: rgba(18, 18, 22, 0.95);
@@ -65,21 +67,22 @@
       letter-spacing: 1px;
     }
     .security-chip {
-      font-size: 0.65rem;
-      padding: 4px 8px;
+      font-size: 0.68rem;
+      padding: 5px 10px;
       background: rgba(0, 230, 118, 0.1);
       color: var(--green);
       border: 1px solid rgba(0, 230, 118, 0.3);
       border-radius: 20px;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      font-weight: 700;
     }
 
-    /* Regime Mode Switcher */
+    /* Regime Switcher */
     .regime-switcher {
       display: flex;
-      margin: 14px 16px;
+      margin: 14px 16px 10px;
       background: var(--surface);
       border-radius: 14px;
       padding: 4px;
@@ -116,7 +119,7 @@
     .days-carousel {
       display: flex;
       gap: 8px;
-      padding: 0 16px 12px;
+      padding: 6px 16px 14px;
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -126,17 +129,55 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
       white-space: nowrap;
       transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .day-pill.active {
       border-color: var(--gold);
       color: #fff;
       background: #2a2215;
+    }
+    .day-pill.completed::after {
+      content: "✓";
+      color: var(--green);
+      font-weight: 900;
+      font-size: 0.8rem;
+    }
+
+    /* Progress Banner */
+    .progress-strip {
+      margin: 0 16px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 16px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .progress-bar-bg {
+      background: var(--surface);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--red-accent), var(--green));
+      height: 100%;
+      width: 0%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
     }
 
     /* Cards */
@@ -152,7 +193,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .meta-tag {
       font-size: 0.7rem;
@@ -167,6 +208,7 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      font-weight: 600;
     }
     .workout-title {
       font-size: 1.3rem;
@@ -179,6 +221,7 @@
       line-height: 1.4;
       margin-bottom: 16px;
     }
+
     .exercise-list {
       display: flex;
       flex-direction: column;
@@ -192,20 +235,52 @@
       padding: 12px 14px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.04);
+      transition: all 0.2s;
+    }
+    .exercise-item.checked {
+      border-color: rgba(0, 230, 118, 0.4);
+      background: rgba(0, 230, 118, 0.05);
     }
     .ex-info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
+      flex: 1;
+      padding-right: 10px;
     }
     .ex-name {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .ex-sets {
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: var(--text-muted);
+      line-height: 1.3;
     }
+    .ex-check-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 2px solid var(--card-border);
+      background: transparent;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .ex-check-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #000;
+    }
+
     .start-btn {
       width: 100%;
       padding: 14px;
@@ -240,9 +315,7 @@
       flex-direction: column;
       padding: 24px 18px;
     }
-    .player-overlay.active {
-      display: flex;
-    }
+    .player-overlay.active { display: flex; }
     .player-header {
       display: flex;
       justify-content: space-between;
@@ -256,8 +329,8 @@
       border: none;
       color: #fff;
       font-size: 1.2rem;
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -278,7 +351,7 @@
       margin-bottom: 8px;
     }
     .player-title {
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       font-weight: 900;
       margin-bottom: 8px;
       max-width: 90%;
@@ -291,7 +364,7 @@
       line-height: 1.4;
     }
     .timer-ring {
-      font-size: 4rem;
+      font-size: 4.2rem;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
       color: #fff;
@@ -312,13 +385,12 @@
       font-weight: 800;
       font-size: 1rem;
       cursor: pointer;
-      transition: 0.15s;
     }
     .ctrl-btn.primary {
       background: #fff;
       color: #000;
       flex: 1;
-      max-width: 200px;
+      max-width: 180px;
     }
     .ctrl-btn.secondary {
       background: #222;
@@ -356,30 +428,40 @@
       font-size: 1.25rem;
     }
 
-    /* Weight Tracker View */
+    /* Stat Cards */
     .stat-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
       margin-bottom: 16px;
     }
     .stat-box {
       background: var(--surface);
-      padding: 14px;
+      padding: 12px 8px;
       border-radius: 14px;
       text-align: center;
       border: 1px solid rgba(255,255,255,0.03);
     }
     .stat-val {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 900;
       color: #fff;
     }
     .stat-lbl {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+    .rest-box {
+      text-align: center;
+      padding: 30px 15px;
+      color: var(--text-muted);
+    }
+    .rest-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -392,9 +474,24 @@
     </div>
     <div class="security-chip">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-      100% On-Device
+      100% Offline & Saved
     </div>
   </header>
+
+  <!-- Progress Bar Strip -->
+  <div class="progress-strip">
+    <div class="progress-header">
+      <span id="progress-text">6-WEEK TRANSFORMATION PROGRESS</span>
+      <span id="progress-pct" style="color:var(--green)">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:0.7rem; color:var(--text-muted);">
+      <span id="completed-workouts-stat">0/24 Workouts Completed</span>
+      <span id="streak-stat">🔥 0-Day Streak</span>
+    </div>
+  </div>
 
   <!-- Regime Switcher -->
   <div class="regime-switcher">
@@ -407,14 +504,14 @@
   </div>
 
   <!-- Day Carousel -->
-  <div class="days-carousel">
+  <div class="days-carousel" id="days-carousel">
     <div class="day-pill active" onclick="selectDay(0, this)">Mon: Power & Chest</div>
     <div class="day-pill" onclick="selectDay(1, this)">Tue: Speed & Back</div>
-    <div class="day-pill" onclick="selectDay(2, this)">Wed: Rest & Recovery</div>
+    <div class="day-pill" onclick="selectDay(2, this)">Wed: Active Rest</div>
     <div class="day-pill" onclick="selectDay(3, this)">Thu: Angles & Delts</div>
     <div class="day-pill" onclick="selectDay(4, this)">Fri: Gauntlet & Legs</div>
     <div class="day-pill" onclick="selectDay(5, this)">Sat: Full Rest</div>
-    <div class="day-pill" onclick="selectDay(6, this)">Sun: Mobility</div>
+    <div class="day-pill" onclick="selectDay(6, this)">Sun: Mobility Rest</div>
   </div>
 
   <!-- Active Workout Card -->
@@ -423,47 +520,59 @@
       <span class="meta-tag" id="w-phase">PHASE 1 (WEEKS 1-2)</span>
       <span class="meta-duration" id="w-duration">⏱️ 25 Mins</span>
     </div>
-    <h2 class="workout-title" id="w-title">Heavy Bag & Range Power</h2>
-    <p class="workout-desc" id="w-desc">16oz gloved shadowboxing, distance calibration on the bag, and rotational core finish.</p>
+    <h2 class="workout-title" id="w-title">Heavy Bag Range & Surya Bodyweight</h2>
+    <p class="workout-desc" id="w-desc">Surya Namaskar, push-ups/split-squats, hindu pushups/squats, 16oz bag rounds, ab finish.</p>
     
     <div class="exercise-list" id="exercise-list">
       <!-- Injected dynamically -->
     </div>
 
-    <button class="start-btn" id="start-btn" onclick="startWorkout()">Start Workout</button>
+    <button class="start-btn" id="start-btn" onclick="startWorkout()">Start Workout Timer</button>
+
+    <div style="display:flex; gap:10px; margin-top:12px;">
+      <button onclick="toggleDayCompleted()" id="complete-day-btn" style="flex:1; padding:10px; border-radius:10px; background:var(--surface); border:1px solid var(--card-border); color:var(--text-main); font-weight:700; font-size:0.8rem; cursor:pointer;">
+        Mark Day Completed ✓
+      </button>
+    </div>
   </div>
 
-  <!-- Profile & Stat Card -->
+  <!-- Profile & Stat Card with Permanent Offline Persistence -->
   <div class="card">
     <div class="workout-meta">
       <span class="meta-tag">TRANSFORMATION DASHBOARD</span>
-      <span class="meta-duration">5'9" · Target 78.5 kg</span>
+      <span class="meta-duration">5'9" · Goal 78.5 kg</span>
     </div>
     <div class="stat-row">
       <div class="stat-box">
         <div class="stat-val" id="curr-weight">84.0 kg</div>
-        <div class="stat-lbl">Current Weight</div>
+        <div class="stat-lbl">Morning Weight</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" style="color:var(--green)">-5.5 kg</div>
-        <div class="stat-lbl">6-Week Goal</div>
+        <div class="stat-val" id="goal-delta" style="color:var(--green)">-5.5 kg</div>
+        <div class="stat-lbl">To 78.5 kg Target</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="total-calories-stat" style="color:var(--gold)">0</div>
+        <div class="stat-lbl">Est. Cal Burned</div>
       </div>
     </div>
-    <div style="font-size:0.75rem; color:var(--text-muted); line-height:1.5;">
-      🔒 <strong>Zero Cloud Storage / Zero Tracking</strong>: All your logs, weights, and timestamps reside strictly inside your phone's encrypted browser storage (WebStorage API).
+    <div style="display:flex; gap:8px;">
+      <button onclick="logWeightPrompt()" style="flex:1; padding:10px; border-radius:10px; background:var(--surface); border:1px solid var(--card-border); color:#fff; font-weight:700; font-size:0.8rem; cursor:pointer;">
+        ✏️ Edit / Log Today's Weight
+      </button>
     </div>
   </div>
 
   <!-- Leap Fitness Style Interactive Player -->
   <div class="player-overlay" id="player">
     <div class="player-header">
-      <span id="player-progress">Exercise 1 of 4</span>
+      <span id="player-progress">Exercise 1 of 6</span>
       <button class="close-player" onclick="closePlayer()">✕</button>
     </div>
     <div class="player-center">
       <div class="player-stage-tag" id="player-stage">ROUND 1</div>
-      <div class="player-title" id="player-name">16oz Shadowboxing: 1-2s</div>
-      <div class="player-instruction" id="player-desc">Snap rear heel, keep guard tight, fire stiff jabs and crosses.</div>
+      <div class="player-title" id="player-name">Surya Namaskar (3 Sets)</div>
+      <div class="player-instruction" id="player-desc">3 complete flow cycles. Synchronize deep breath, stretch spine and hamstrings.</div>
       <div class="timer-ring" id="timer-display">02:30</div>
       <div class="player-controls">
         <button class="ctrl-btn secondary" onclick="prevStep()">⏮</button>
@@ -474,7 +583,7 @@
   </div>
 
   <nav class="bottom-nav">
-    <div class="nav-item active" onclick="switchTab('workout')">
+    <div class="nav-item active" onclick="switchNavTab('workout')">
       <span class="nav-icon">⚡</span>
       <span>Workouts</span>
     </div>
@@ -482,29 +591,29 @@
       <span class="nav-icon">⚖️</span>
       <span>Log Weight</span>
     </div>
-    <div class="nav-item" onclick="showSecurityInfo()">
-      <span class="nav-icon">🛡️</span>
-      <span>Security</span>
+    <div class="nav-item" onclick="viewHistoryAlert()">
+      <span class="nav-icon">📊</span>
+      <span>History & Cals</span>
     </div>
   </nav>
 
   <script>
-    // Audio synthesis for sounds without external MP3 files
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq = 880, dur = 0.15) {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + dur);
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch(e) {}
     }
 
-    // Voice cues via Web Speech API
     function speakCue(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -514,57 +623,92 @@
       }
     }
 
-    // Workouts DB
     const workouts = {
       boxing: [
         {
-          day: "Monday (Technique & Range)",
-          duration: "25 Mins",
-          title: "Heavy Bag Range Calibration",
-          desc: "Warm up ankles, 16oz shadowboxing form, distance jabs on heavy bag, and ab twists.",
+          day: "Monday (Morning Conditioning & Bag)",
+          duration: "25-30 Mins",
+          title: "Surya Flow, Bodyweight & 16oz Heavy Bag",
+          desc: "Full body awakening, high-volume push-ups/split-squats, hindu dand/baithak, and heavy bag snaps.",
+          met: 10.0,
+          durationMins: 28,
           steps: [
-            { name: "Jump Rope & Foot Bounce", time: 180, desc: "Light ankle bounces and arm circles to warm shoulders." },
-            { name: "16oz Gloves: Stiff Jabs & 1-2s", time: 300, desc: "Shadowbox with 16oz gloves. High guard, step-and-drag footwork." },
-            { name: "Heavy Bag: Range Jabs & Cross", time: 540, desc: "Hit bag with snap. Don't push. Pivot rear heel on cross." },
-            { name: "Core: Russian Twists & Plank", time: 240, desc: "45s work, 15s transition. High rotational tension." }
+            { id: "b_m_1", name: "Surya Namaskar (3 Sets)", time: 180, desc: "3 complete continuous flows. Full spine, chest & hamstring mobility." },
+            { id: "b_m_2", name: "Push-ups 4x25 alt. Split Squats 3x10/leg", time: 420, desc: "Alternate 25 strict push-ups with 10 split squats per leg. 4 cycles." },
+            { id: "b_m_3", name: "Hindu Push-ups 3x10 alt. Squats 10x3", time: 360, desc: "Flow dive-bomber dand alternating with explosive deep baithak squats." },
+            { id: "b_m_4", name: "16oz Gloves: Stiff Jabs & 1-2s", time: 300, desc: "Shadowbox with 16oz gloves. High guard, step-and-drag footwork." },
+            { id: "b_m_5", name: "Heavy Bag: Power Snap Combos", time: 480, desc: "Dig hooks and 1-2s into bag. Exhale on impact, rotate rear heel." },
+            { id: "b_m_6", name: "Boxer Core: Russian Twists & Plank", time: 240, desc: "Rotational oblique strength & rigid anti-extension core hold." }
           ]
         },
         {
-          day: "Tuesday (Speed & Volume)",
-          duration: "25 Mins",
-          title: "High Output 16oz Flurries",
-          desc: "Fast hands, head movement, continuous hooks and body rips.",
+          day: "Tuesday (Morning Speed & Volume)",
+          duration: "25-30 Mins",
+          title: "Surya Flow, Flurries & High Output Bag",
+          desc: "Morning mobility, calisthenic superset, rapid 3-punch combos on the bag, and ab compression.",
+          met: 10.0,
+          durationMins: 28,
           steps: [
-            { name: "Jump Rope Double Taps", time: 180, desc: "Elastic calf rhythm." },
-            { name: "16oz Shadow: 1-2-3 Combos", time: 300, desc: "Horizontal lead hooks with full hip turn." },
-            { name: "Heavy Bag: 3-Shot Flurries", time: 540, desc: "High cadence, quick snaps, never stand flat-footed." },
-            { name: "Core: Mountain Climbers & Flutters", time: 240, desc: "High tempo ab compression." }
+            { id: "b_t_1", name: "Surya Namaskar (3 Sets)", time: 180, desc: "3 cycles to awaken heart rate and open shoulder capsules." },
+            { id: "b_t_2", name: "Push-ups 4x25 alt. Split Squats 3x10/leg", time: 420, desc: "High muscular endurance pacing. Keep chest touching floor." },
+            { id: "b_t_3", name: "Hindu Push-ups 3x10 alt. Squats 10x3", time: 360, desc: "Deep shoulder scoop dand and full depth rhythmic baithak." },
+            { id: "b_t_4", name: "16oz Shadow: Hook-Cross-Hook", time: 300, desc: "Pivot hips cleanly, snap elbows 90 degrees." },
+            { id: "b_t_5", name: "Heavy Bag: Continuous Flurries", time: 480, desc: "High cadence 3-shot flurries, active head movement." },
+            { id: "b_t_6", name: "Core: Mountain Climbers & Flutters", time: 240, desc: "Rapid knee drive and lower ab flutter kicks." }
           ]
         },
-        { day: "Wednesday", title: "Active Rest Day", duration: "Off", desc: "Shoulder band stretches, foam rolling, walk." },
         {
-          day: "Thursday (Defense & Angles)",
-          duration: "25 Mins",
-          title: "Slips, Rolls & Pivots",
-          desc: "Box the bag like an opponent that hits back. Slip right, roll under, pivot 90 degrees.",
+          day: "Wednesday (Active Recovery)",
+          duration: "Rest",
+          title: "Mid-Week Active Recovery",
+          desc: "Light shoulder rotations, easy 15-minute walk, band stretches, and hydration.",
+          isRest: true
+        },
+        {
+          day: "Thursday (Morning Angles & Counters)",
+          duration: "25-30 Mins",
+          title: "Surya Flow, Slips, Rolls & Body Strikes",
+          desc: "Full morning calisthenics, slipping off the center line, and heavy bag liver shots.",
+          met: 10.0,
+          durationMins: 28,
           steps: [
-            { name: "Jump Rope & Hip Opener", time: 180, desc: "Dynamic stretching." },
-            { name: "16oz Shadow: Slip-Counter Flow", time: 300, desc: "Slip, roll, throw 2-3 counter." },
-            { name: "Heavy Bag: Angles & Body Shots", time: 540, desc: "Drop with knees on liver/rib strikes." },
-            { name: "Core: Boxer Sit-ups with 1-2s", time: 240, desc: "Fire double punches at the top." }
+            { id: "b_th_1", name: "Surya Namaskar (3 Sets)", time: 180, desc: "Focus on breath synchronization and spinal extension." },
+            { id: "b_th_2", name: "Push-ups 4x25 alt. Split Squats 3x10/leg", time: 420, desc: "Maintain crisp form. Explode out of split squat bottoms." },
+            { id: "b_th_3", name: "Hindu Push-ups 3x10 alt. Squats 10x3", time: 360, desc: "Thoracic spine flow into arched cobra, followed by squats." },
+            { id: "b_th_4", name: "16oz Shadow: Slip-Slip-Counter", time: 300, desc: "Slip right, roll left, fire shovel hook." },
+            { id: "b_th_5", name: "Heavy Bag: Angles & Body Rips", time: 480, desc: "Step at 45 degree angle, unload left hook to liver." },
+            { id: "b_th_6", name: "Core: Boxer Sit-ups with 1-2s", time: 240, desc: "Fire double punches at the top of every repetition." }
           ]
         },
         {
           day: "Friday (Championship Burnout)",
-          duration: "25 Mins",
-          title: "Full 8-Round Bag Gauntlet",
-          desc: "High-intensity bag power sprints, infighting pressure, and iron core finish.",
+          duration: "25-30 Mins",
+          title: "Morning Gauntlet & Bag Tabata",
+          desc: "Surya flow, calisthenics burnout, and 15s/15s sprint flurries on the heavy bag.",
+          met: 10.5,
+          durationMins: 28,
           steps: [
-            { name: "Jump Rope Sprint", time: 180, desc: "Fast pacing." },
-            { name: "16oz Shadow: Inside Infighting", time: 300, desc: "Tight hooks and short uppercuts." },
-            { name: "Heavy Bag: Tabata Sprints", time: 540, desc: "15s all-out flurry / 15s active step." },
-            { name: "Core: Hollow Dish & Leg Raises", time: 240, desc: "Iron core hold." }
+            { id: "b_f_1", name: "Surya Namaskar (3 Sets)", time: 180, desc: "Dynamic stretch flow before high output work." },
+            { id: "b_f_2", name: "Push-ups 4x25 alt. Split Squats 3x10/leg", time: 420, desc: "Pace yourself evenly across all 4 sets." },
+            { id: "b_f_3", name: "Hindu Push-ups 3x10 alt. Squats 10x3", time: 360, desc: "Final push on tricep, shoulder and quadricep endurance." },
+            { id: "b_f_4", name: "16oz Shadow: Infighting Uppercuts", time: 300, desc: "Compact inside elbows and sharp body rips." },
+            { id: "b_f_5", name: "Heavy Bag: Tabata Sprints", time: 480, desc: "15s all-out flurry / 15s active circling steps." },
+            { id: "b_f_6", name: "Core: Hollow Dish & Leg Raises", time: 240, desc: "Isometric core compression to finish the week." }
           ]
+        },
+        {
+          day: "Saturday (Full Rest & Muscle Rebuilding)",
+          duration: "Full Rest",
+          title: "Complete Rest Day",
+          desc: "Full muscular recovery. Protein intake, muscle repair, foam roll, and nervous system reload.",
+          isRest: true
+        },
+        {
+          day: "Sunday (Full Rest & Joint Mobility)",
+          duration: "Full Rest",
+          title: "Complete Rest Day",
+          desc: "Rest and recharge for next week's dual splits. No training today.",
+          isRest: true
         }
       ],
       lifting: [
@@ -573,52 +717,80 @@
           duration: "40 Mins",
           title: "Heavy Bench & Upper Push",
           desc: "Barbell bench press, incline dumbbell press, cable flyes, and rope pushdowns.",
+          met: 6.0,
+          durationMins: 40,
           steps: [
-            { name: "Bench Press (4 Sets)", time: 480, desc: "Warm-up then 3x8-10 reps + 1 rest-pause set." },
-            { name: "Incline DB Press (3 Sets)", time: 420, desc: "Full chest stretch and powerful press." },
-            { name: "Incline DB Flyes (3 Sets)", time: 360, desc: "Controlled deep stretch." },
-            { name: "Triceps Rope Pushdowns (3 Sets)", time: 360, desc: "Lock out elbows and spread rope." },
-            { name: "Standing Calf Raises (4 Sets)", time: 360, desc: "2-second peak pause at top." }
+            { id: "l_m_1", name: "Barbell Bench Press (4 Sets)", time: 480, desc: "Warm-up then 3x8-10 reps + 1 rest-pause set." },
+            { id: "l_m_2", name: "Incline DB Press (3 Sets)", time: 420, desc: "Full chest stretch and powerful press." },
+            { id: "l_m_3", name: "Incline DB Flyes (3 Sets)", time: 360, desc: "Controlled deep stretch." },
+            { id: "l_m_4", name: "Triceps Rope Pushdowns (3 Sets)", time: 360, desc: "Lock out elbows and spread rope." },
+            { id: "l_m_5", name: "Standing Calf Raises (4 Sets)", time: 360, desc: "2-second peak pause at top." }
           ]
         },
         {
           day: "Tuesday (Back, Biceps & Calves)",
           duration: "40 Mins",
-          title: "Rows & Lat Hypertrophy",
+          title: "Heavy Rows & Lat Hypertrophy",
           desc: "Bent-over barbell rows, wide-grip lat pulldowns, seated cable rows, and heavy curls.",
+          met: 6.0,
+          durationMins: 40,
           steps: [
-            { name: "Barbell Bent-Over Rows", time: 480, desc: "Pull to sternum, squeeze lats hard." },
-            { name: "Lat Pulldowns (3 Sets)", time: 420, desc: "Full stretch, drive elbows down." },
-            { name: "Seated Cable Rows (3 Sets)", time: 360, desc: "Tight horizontal contraction." },
-            { name: "Barbell Bicep Curls (4 Sets)", time: 360, desc: "Strict form, zero swing." },
-            { name: "Seated Calf Raises (4 Sets)", time: 360, desc: "High reps for soleus pump." }
+            { id: "l_t_1", name: "Barbell Bent-Over Rows (4 Sets)", time: 480, desc: "Pull to sternum, squeeze lats hard." },
+            { id: "l_t_2", name: "Lat Pulldowns (3 Sets)", time: 420, desc: "Full stretch, drive elbows down." },
+            { id: "l_t_3", name: "Seated Cable Rows (3 Sets)", time: 360, desc: "Tight horizontal contraction." },
+            { id: "l_t_4", name: "Barbell Bicep Curls (4 Sets)", time: 360, desc: "Strict form, zero momentum." },
+            { id: "l_t_5", name: "Seated Calf Raises (4 Sets)", time: 360, desc: "High reps for soleus pump." }
           ]
         },
-        { day: "Wednesday", title: "Active Rest Day", duration: "Off", desc: "Rest day to regenerate central nervous system." },
+        {
+          day: "Wednesday (Active Recovery)",
+          duration: "Rest",
+          title: "Mid-Week CNS Rest",
+          desc: "Central nervous system rest day. Rehydrate and let muscle fibers repair.",
+          isRest: true
+        },
         {
           day: "Thursday (Shoulders, Traps & Abs)",
           duration: "40 Mins",
           title: "Deltoid Width & Heavy Press",
           desc: "Seated dumbbell overhead press, lateral raises, face pulls, and dumbbell shrugs.",
+          met: 6.0,
+          durationMins: 40,
           steps: [
-            { name: "DB Overhead Press (4 Sets)", time: 480, desc: "Heavy pressing power." },
-            { name: "DB Lateral Raises (3 Sets)", time: 360, desc: "Strict side deltoid burnout." },
-            { name: "Rear Delt Face Pulls (3 Sets)", time: 360, desc: "Protect shoulders & thicken back." },
-            { name: "DB Heavy Shrugs (4 Sets)", time: 360, desc: "Trapezius development." },
-            { name: "Hanging Leg Raises (3 Sets)", time: 360, desc: "Lower ab tightness." }
+            { id: "l_th_1", name: "DB Overhead Press (4 Sets)", time: 480, desc: "Heavy pressing power for 3D shoulders." },
+            { id: "l_th_2", name: "DB Lateral Raises (3 Sets)", time: 360, desc: "Strict side deltoid burnout." },
+            { id: "l_th_3", name: "Rear Delt Face Pulls (3 Sets)", time: 360, desc: "Protect shoulders & thicken upper back." },
+            { id: "l_th_4", name: "DB Heavy Shrugs (4 Sets)", time: 360, desc: "Trapezius contraction hold at top." },
+            { id: "l_th_5", name: "Hanging Leg Raises (3 Sets)", time: 360, desc: "Deep lower ab tightness." }
           ]
         },
         {
           day: "Friday (Legs & Posterior Chain)",
           duration: "40 Mins",
-          title: "Barbell Squats & Deadlifts",
+          title: "Barbell Squats & Romanian Deadlifts",
           desc: "Back squats, Romanian deadlifts, leg press, and seated hamstring curls.",
+          met: 6.5,
+          durationMins: 40,
           steps: [
-            { name: "Barbell Back Squat (4 Sets)", time: 600, desc: "Drive up from heels and hips." },
-            { name: "Romanian Deadlifts (4 Sets)", time: 480, desc: "Hamstrings and glute hinge." },
-            { name: "45-Deg Leg Press (3 Sets)", time: 420, desc: "Deep quadricep volume." },
-            { name: "Lying Hamstring Curls (3 Sets)", time: 360, desc: "Direct posterior chain load." }
+            { id: "l_f_1", name: "Barbell Back Squat (4 Sets)", time: 600, desc: "Drive up from heels and hips." },
+            { id: "l_f_2", name: "Romanian Deadlifts (4 Sets)", time: 480, desc: "Hamstrings and glute hinge stretch." },
+            { id: "l_f_3", name: "45-Deg Leg Press (3 Sets)", time: 420, desc: "Deep quadricep volume." },
+            { id: "l_f_4", name: "Lying Hamstring Curls (3 Sets)", time: 360, desc: "Direct posterior chain load." }
           ]
+        },
+        {
+          day: "Saturday (Full Rest & Muscle Rebuilding)",
+          duration: "Full Rest",
+          title: "Complete Rest Day",
+          desc: "Full recovery day. Ensure adequate sleep, protein, and water.",
+          isRest: true
+        },
+        {
+          day: "Sunday (Full Rest & Joint Mobility)",
+          duration: "Full Rest",
+          title: "Complete Rest Day",
+          desc: "No evening lifting today. Full recuperation before Monday's bench split.",
+          isRest: true
         }
       ]
     };
@@ -630,41 +802,193 @@
     let curStepIdx = 0;
     let isRunning = false;
 
+    const STORAGE_KEY = "iron_strike_user_weight_v2";
+    const COMPLETED_EX_KEY = "iron_strike_completed_exercises_v2";
+    const COMPLETED_DAYS_KEY = "iron_strike_completed_days_v2";
+    const TOTAL_CALS_KEY = "iron_strike_burned_cals_v2";
+
+    function getStorage(key, defaultVal) {
+      try {
+        const val = localStorage.getItem(key);
+        return val ? JSON.parse(val) : defaultVal;
+      } catch (e) {
+        return defaultVal;
+      }
+    }
+
+    function setStorage(key, val) {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch (e) {}
+    }
+
+    function getWeight() {
+      const val = localStorage.getItem(STORAGE_KEY);
+      return val ? parseFloat(val) : 84.0;
+    }
+
+    function updateWeightDisplay(weight) {
+      const w = parseFloat(weight).toFixed(1);
+      document.getElementById('curr-weight').textContent = w + " kg";
+      const delta = (w - 78.5).toFixed(1);
+      const goalEl = document.getElementById('goal-delta');
+      if (delta > 0) {
+        goalEl.textContent = "-" + delta + " kg";
+        goalEl.style.color = "var(--green)";
+      } else if (delta < 0) {
+        goalEl.textContent = "+" + Math.abs(delta) + " kg";
+        goalEl.style.color = "var(--gold)";
+      } else {
+        goalEl.textContent = "GOAL HIT! 🎯";
+        goalEl.style.color = "var(--green)";
+      }
+    }
+
+    function logWeightPrompt() {
+      const current = getWeight();
+      const input = prompt("Log your today's morning weight (kg):", current);
+      if (input !== null && input.trim() !== "" && !isNaN(input)) {
+        const parsed = parseFloat(input).toFixed(1);
+        try {
+          localStorage.setItem(STORAGE_KEY, parsed);
+          localStorage.setItem("user_cur_weight", parsed);
+        } catch (e) {}
+        updateWeightDisplay(parsed);
+      }
+    }
+
     function renderWorkout() {
       const wList = workouts[curRegime];
-      const cur = wList[curDayIdx] || wList[0];
+      const cur = wList[curDayIdx];
       const card = document.getElementById('workout-card');
       const exList = document.getElementById('exercise-list');
       const startBtn = document.getElementById('start-btn');
+      const compDayBtn = document.getElementById('complete-day-btn');
 
       document.getElementById('w-duration').textContent = '⏱️ ' + cur.duration;
       document.getElementById('w-title').textContent = cur.title;
       document.getElementById('w-desc').textContent = cur.desc;
 
-      if (!cur.steps) {
-        exList.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted)">🌿 Rest day. Foam roll and hydrate.</div>';
+      const completedDays = getStorage(COMPLETED_DAYS_KEY, {});
+      const dayKey = `${curRegime}_day_${curDayIdx}`;
+      const isDayDone = !!completedDays[dayKey];
+
+      compDayBtn.textContent = isDayDone ? "Day Marked Completed ✓" : "Mark Day Completed ✓";
+      compDayBtn.style.background = isDayDone ? "rgba(0, 230, 118, 0.2)" : "var(--surface)";
+      compDayBtn.style.borderColor = isDayDone ? "var(--green)" : "var(--card-border)";
+
+      if (cur.isRest) {
+        exList.innerHTML = `
+          <div class="rest-box">
+            <div class="rest-icon">🛌</div>
+            <h3 style="color:#fff; margin-bottom:6px;">Scheduled Rest Day</h3>
+            <p style="font-size:0.85rem; line-height:1.4;">Zero training scheduled. Muscles grow and rebuild during sleep and rest. Keep your protein intake high and hydrate well.</p>
+          </div>
+        `;
         startBtn.style.display = 'none';
+        compDayBtn.style.display = 'none';
         return;
       }
 
       startBtn.style.display = 'block';
+      compDayBtn.style.display = 'block';
       startBtn.className = 'start-btn ' + (curRegime === 'lifting' ? 'lifting' : '');
 
-      exList.innerHTML = cur.steps.map(s => `
-        <div class="exercise-item">
-          <div class="ex-info">
-            <div class="ex-name">${s.name}</div>
-            <div class="ex-sets">${s.desc}</div>
+      const completedExercises = getStorage(COMPLETED_EX_KEY, {});
+
+      exList.innerHTML = cur.steps.map((s, idx) => {
+        const isChecked = !!completedExercises[s.id];
+        return `
+          <div class="exercise-item ${isChecked ? 'checked' : ''}" id="ex-row-${s.id}">
+            <div class="ex-info" onclick="toggleExerciseCheck('${s.id}')">
+              <div class="ex-name">${s.name}</div>
+              <div class="ex-sets">${s.desc}</div>
+            </div>
+            <button class="ex-check-btn ${isChecked ? 'active' : ''}" onclick="toggleExerciseCheck('${s.id}')">
+              ✓
+            </button>
           </div>
-          <div style="font-weight:800;font-size:0.85rem;color:var(--gold);">${Math.floor(s.time/60)}m</div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
+    }
+
+    function toggleExerciseCheck(id) {
+      const completedExercises = getStorage(COMPLETED_EX_KEY, {});
+      completedExercises[id] = !completedExercises[id];
+      setStorage(COMPLETED_EX_KEY, completedExercises);
+      renderWorkout();
+      updateProgressStats();
+    }
+
+    function toggleDayCompleted() {
+      const completedDays = getStorage(COMPLETED_DAYS_KEY, {});
+      const dayKey = `${curRegime}_day_${curDayIdx}`;
+      const wasDone = !!completedDays[dayKey];
+      completedDays[dayKey] = !wasDone;
+      setStorage(COMPLETED_DAYS_KEY, completedDays);
+
+      if (!wasDone) {
+        const cur = workouts[curRegime][curDayIdx];
+        const weight = getWeight();
+        const durationHours = (cur.durationMins || 30) / 60;
+        const met = cur.met || 7.0;
+        const burned = Math.round(met * weight * durationHours);
+
+        let totalCals = getStorage(TOTAL_CALS_KEY, 0);
+        totalCals += burned;
+        setStorage(TOTAL_CALS_KEY, totalCals);
+
+        playBeep(980, 0.4);
+        alert(`🔥 Outstanding! Workout Completed!\n\n⚡ Estimated Calories Burned: ~${burned} kcal\n💪 Advancing to the next scheduled day!`);
+
+        // AUTO-ADVANCE: Increment to next day
+        if (curDayIdx < workouts[curRegime].length - 1) {
+          curDayIdx++;
+        } else {
+          curDayIdx = 0;
+        }
+      }
+
+      // Sync active carousel pill
+      const pills = document.querySelectorAll('.day-pill');
+      pills.forEach((p, idx) => {
+        p.classList.toggle('active', idx === curDayIdx);
+      });
+
+      renderWorkout();
+      updateCarouselPills();
+      updateProgressStats();
+    }
+
+    function updateCarouselPills() {
+      const completedDays = getStorage(COMPLETED_DAYS_KEY, {});
+      const pills = document.querySelectorAll('.day-pill');
+      pills.forEach((p, idx) => {
+        const dayKey = `${curRegime}_day_${idx}`;
+        p.classList.toggle('completed', !!completedDays[dayKey]);
+      });
+    }
+
+    function updateProgressStats() {
+      const completedDays = getStorage(COMPLETED_DAYS_KEY, {});
+      const totalPlanned = 24;
+      const completedCount = Object.keys(completedDays).filter(k => completedDays[k]).length;
+      const pct = Math.min(100, Math.round((completedCount / totalPlanned) * 100));
+
+      document.getElementById('progress-pct').textContent = pct + '%';
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('completed-workouts-stat').textContent = `${completedCount}/${totalPlanned} Workouts Completed`;
+      document.getElementById('streak-stat').textContent = `🔥 ${completedCount}-Day Streak`;
+
+      const totalCals = getStorage(TOTAL_CALS_KEY, 0);
+      document.getElementById('total-calories-stat').textContent = totalCals.toLocaleString();
     }
 
     function switchRegime(mode) {
       curRegime = mode;
       document.getElementById('btn-boxing').classList.toggle('active', mode === 'boxing');
       document.getElementById('btn-lifting').classList.toggle('active', mode === 'lifting');
+      updateCarouselPills();
       renderWorkout();
     }
 
@@ -677,7 +1001,7 @@
 
     function startWorkout() {
       const cur = workouts[curRegime][curDayIdx];
-      if (!cur || !cur.steps) return;
+      if (!cur || !cur.steps || cur.steps.length === 0) return;
       curStepIdx = 0;
       loadStep(curStepIdx);
       document.getElementById('player').classList.add('active');
@@ -736,13 +1060,19 @@
 
     function nextStep() {
       const cur = workouts[curRegime][curDayIdx];
+      if (cur.steps[curStepIdx]) {
+        const id = cur.steps[curStepIdx].id;
+        const completedExercises = getStorage(COMPLETED_EX_KEY, {});
+        completedExercises[id] = true;
+        setStorage(COMPLETED_EX_KEY, completedExercises);
+      }
+
       if (curStepIdx < cur.steps.length - 1) {
         curStepIdx++;
         loadStep(curStepIdx);
       } else {
-        speakCue("Workout Complete! Fantastic job.");
-        alert("🎉 Congratulations! Workout completed!");
         closePlayer();
+        toggleDayCompleted();
       }
     }
 
@@ -757,24 +1087,33 @@
       clearInterval(timerId);
       isRunning = false;
       document.getElementById('player').classList.remove('active');
+      renderWorkout();
     }
 
-    function logWeightPrompt() {
-      const input = prompt("Log your today's morning weight (kg):", "83.5");
-      if (input && !isNaN(input)) {
-        localStorage.setItem("user_cur_weight", input);
-        document.getElementById('curr-weight').textContent = input + " kg";
+    function switchNavTab(tab) {
+      if (tab === 'workout') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
 
-    function showSecurityInfo() {
-      alert("🛡️ Security & Privacy Architecture:\n\n1. 100% Zero-Cloud Storage: All your logs, timers, and data remain strictly on your phone.\n2. Zero telemetry or external tracker scripts.\n3. Fully offline-ready.\n4. Direct phone-side execution.");
+    function viewHistoryAlert() {
+      const completedDays = getStorage(COMPLETED_DAYS_KEY, {});
+      const totalCals = getStorage(TOTAL_CALS_KEY, 0);
+      const keys = Object.keys(completedDays).filter(k => completedDays[k]);
+      alert(`📊 6-Week Transformation Status:\n\n• Logged Sessions: ${keys.length} completed\n• Total Calories Burned: ~${totalCals.toLocaleString()} kcal\n• Target Goal: 78.5 kg from 84.0 kg\n\nKeep crushing the morning Surya/bodyweight flow and evening heavy volume!`);
     }
 
-    // Initialize
-    const savedW = localStorage.getItem("user_cur_weight");
-    if (savedW) document.getElementById('curr-weight').textContent = savedW + " kg";
-    renderWorkout();
+    function initApp() {
+      const w = getWeight();
+      updateWeightDisplay(w);
+      updateCarouselPills();
+      updateProgressStats();
+      renderWorkout();
+    }
+
+    document.addEventListener("DOMContentLoaded", initApp);
+    window.addEventListener("load", initApp);
+    initApp();
   </script>
 </body>
 </html>
