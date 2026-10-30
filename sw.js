@@ -1,5 +1,5 @@
-// Iron & Strike Service Worker
-const CACHE_NAME = 'iron-strike-v3';
+// Iron & Strike Service Worker v4
+const CACHE_NAME = 'iron-strike-v4';
 const ASSETS = [
   './',
   './index.html',
